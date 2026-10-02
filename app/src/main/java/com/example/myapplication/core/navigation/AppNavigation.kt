@@ -20,11 +20,13 @@ fun AppNavigation() {
         ) {
 
             composable(Screen.Home.route) {
-                HomeScreen(padding)
+                HomeScreen(
+                    padding = padding,
+                    navController = navController
+                )
             }
 
         }
 
     }
-
 }

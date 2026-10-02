@@ -12,16 +12,18 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.myapplication.core.theme.DarkBg
 import com.example.myapplication.presentation.components.CarCard
-import com.example.myapplication.presentation.expenses.ExpensesCard
 import com.example.myapplication.presentation.components.HomeTopBar
+import com.example.myapplication.presentation.expenses.ExpensesCard
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HomeScreen(
     padding: PaddingValues,
-    viewModel: HomeViewModel = koinViewModel()
+    viewModel: HomeViewModel = koinViewModel(),
+    navController: NavController,
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -45,7 +47,9 @@ fun HomeScreen(
         }
 
         item {
-            ExpensesCard()
+            ExpensesCard(
+                onMenuClick = { route -> navController.navigate(route) }
+            )
         }
     }
 }
