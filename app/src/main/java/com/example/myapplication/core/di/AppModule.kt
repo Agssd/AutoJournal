@@ -1,0 +1,31 @@
+package com.example.myapplication.core.di
+
+import androidx.room.Room
+import com.example.myapplication.data.database.AutoJournalDatabase
+import com.example.myapplication.data.repository.CarRepository
+import com.example.myapplication.data.repository.CarRepositoryImpl
+import com.example.myapplication.data.repository.ServiceRecordRepository
+import com.example.myapplication.data.repository.ServiceRecordRepositoryImpl
+import com.example.myapplication.presentation.home.HomeViewModel
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.viewModelOf
+import org.koin.dsl.module
+
+val appModule = module {
+    single {
+        Room.databaseBuilder(
+            androidContext(),
+            AutoJournalDatabase::class.java,
+            "auto_journal_database"
+        ).build()
+    }
+
+    viewModel { HomeViewModel(get()) }
+
+    single { get<AutoJournalDatabase>().carDao() }
+    single { get<AutoJournalDatabase>().serviceRecordDao() }
+
+    single<CarRepository> { CarRepositoryImpl(carDao = get()) }
+    single<ServiceRecordRepository> { ServiceRecordRepositoryImpl(serviceRecordDao = get()) }
+}
