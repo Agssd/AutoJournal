@@ -49,9 +49,8 @@ fun ExpensesCard(
             ) {
                 Text("Общие расходы", fontSize = 16.sp, fontWeight = FontWeight.SemiBold, color = TextWhite)
                 Text(
-                    text = "${state.selectedYear} ⌄",
-                    fontSize = 14.sp, color = TextGray,
-                    modifier = Modifier.clickable { viewModel.selectYear(state.selectedYear - 1) }
+                    text = "${state.selectedYear}",
+                    fontSize = 14.sp, color = TextGray
                 )
             }
             Spacer(modifier = Modifier.height(16.dp))
@@ -65,7 +64,7 @@ fun ExpensesCard(
                     verticalAlignment = Alignment.Bottom
                 ) {
                     Column {
-                        Text(formatEuro(state.total), fontSize = 28.sp, fontWeight = FontWeight.Bold, color = TextWhite)
+                        Text(formatRub(state.total), fontSize = 28.sp, fontWeight = FontWeight.Bold, color = TextWhite)
                         Spacer(modifier = Modifier.height(4.dp))
                         Text(
                             text = state.percentDelta?.let { String.format("%+.0f%% к прошлому году", it) }
@@ -93,22 +92,22 @@ fun ExpensesCard(
     }
 }
 
-private fun formatEuro(v: Double): String {
+private fun formatRub(v: Double): String {
     val f = NumberFormat.getNumberInstance(Locale("ru", "RU")).apply { maximumFractionDigits = 0 }
-    return "${f.format(v)} €"
+    return "${f.format(v)} ₽"
 }
 
 @Composable
 private fun ExpensesChart(items: List<MonthlyExpenseUi>) {
     Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.Bottom) {
-        items.forEachIndexed { index, m ->
+        items.forEach { m ->
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Box(
                     modifier = Modifier
                         .height((50.dp * m.ratio).coerceAtLeast(6.dp))
                         .width(10.dp)
                         .clip(RoundedCornerShape(4.dp))
-                        .background(if (index == items.lastIndex) OrangePrimary else ProgressTrack)
+                        .background(if (m.isCurrent) OrangePrimary else ProgressTrack)
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(text = m.label, fontSize = 9.sp, color = TextGray)

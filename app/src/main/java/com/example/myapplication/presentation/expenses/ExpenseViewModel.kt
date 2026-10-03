@@ -1,5 +1,6 @@
 package com.example.myapplication.presentation.expenses
 
+import android.R.attr.y
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.data.repository.ExpensesRepository
@@ -23,7 +24,12 @@ data class ExpensesUiState(
     val isLoading: Boolean = true
 )
 
-data class MonthlyExpenseUi(val label: String, val total: Double, val ratio: Float)
+data class MonthlyExpenseUi(
+    val label: String,
+    val total: Double,
+    val ratio: Float,
+    val isCurrent: Boolean = false
+)
 
 class ExpensesViewModel(
     private val repo: ExpensesRepository
@@ -43,15 +49,37 @@ class ExpensesViewModel(
             val prevTotal = prev.sumOf { it.amount }
             val delta = if (prevTotal > 0) (total - prevTotal) / prevTotal * 100 else null
 
-            val byMonth = curr.groupBy {
-                Calendar.getInstance().apply { timeInMillis = it.timestampMillis }
-                    .get(Calendar.MONTH)
+            val now = Calendar.getInstance()
+            val curYear = now.get(Calendar.YEAR)
+            val curMonth = now.get(Calendar.MONTH)
+            val endMonth = if (y == curYear) curMonth else 11
+
+            val cal = Calendar.getInstance()
+            fun sumFor(year: Int, month: Int): Double {
+                // curr — это год y, prev — это год y-1
+                val src = if (year == y) curr else prev
+                return src.filter {
+                    cal.apply { timeInMillis = it.timestampMillis }
+                    cal.get(Calendar.YEAR) == year && cal.get(Calendar.MONTH) == month
+                }.sumOf { it.amount }
             }
-            val max = (byMonth.values.maxOfOrNull { list -> list.sumOf { it.amount } } ?: 1.0)
-            // показываем последние 6 месяцев года с данными, либо Янв-Июн если пусто
-            val monthly = (0..5).map { m ->
-                val sum = byMonth[m]?.sumOf { it.amount } ?: 0.0
-                MonthlyExpenseUi(monthLabels[m], sum, if (max > 0) (sum / max).toFloat().coerceAtLeast(0.05f) else 0.05f)
+
+            val pairs = (5 downTo 0).map { back ->
+                var yy = y
+                var mm = endMonth - back
+                if (mm < 0) { mm += 12; yy -= 1 }
+                yy to mm
+            }
+            val totals = pairs.map { (yy, mm) -> sumFor(yy, mm) }
+            val max = totals.maxOrNull()?.takeIf { it > 0 } ?: 1.0
+
+            val monthly = pairs.mapIndexed { i, (yy, mm) ->
+                MonthlyExpenseUi(
+                    label = monthLabels[mm],
+                    total = totals[i],
+                    ratio = (totals[i] / max).toFloat().coerceAtLeast(0.05f),
+                    isCurrent = yy == curYear && mm == curMonth
+                )
             }
 
             ExpensesUiState(y, total, prevTotal, delta, monthly, reminders, false)
