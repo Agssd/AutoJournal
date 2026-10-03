@@ -4,7 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.myapplication.presentation.components.MainScaffold
+import com.example.myapplication.presentation.cars.GarageCar
+import com.example.myapplication.presentation.MainScaffold
 import com.example.myapplication.presentation.home.HomeScreen
 
 @Composable
@@ -12,12 +13,25 @@ fun AppNavigation() {
 
     val navController = rememberNavController()
 
-    MainScaffold { padding ->
+    MainScaffold(navController) { padding ->
 
         NavHost(
             navController = navController,
             startDestination = Screen.Home.route
         ) {
+
+            composable(Screen.Home.route) { HomeScreen(padding, navController) }
+            composable(Screen.CarList.route) {
+                GarageCar(
+                    padding = padding,
+                    onBack = { navController.popBackStack() },
+                    onAddCar = { navController.navigate("car_add") },
+                    onCarClick = { id -> navController.navigate("car_detail/$id") }
+                )
+            }
+            composable(Screen.Expenses.route) { /* ExpensesScreen\*/ }
+            composable(Screen.Settings.route) { /* MoreScreen */ }
+            composable(Screen.AddRecord.route) { /* AddCarScreen */ }
 
             composable(Screen.Home.route) {
                 HomeScreen(
@@ -25,8 +39,14 @@ fun AppNavigation() {
                     navController = navController
                 )
             }
-
+            composable(Screen.CarList.route) {
+                GarageCar(
+                    padding = padding,
+                    onBack = { navController.popBackStack() },
+                    onAddCar = { navController.navigate("car_add") },
+                    onCarClick = { id -> navController.navigate("car_detail/$id") }
+                )
+            }
         }
-
     }
 }

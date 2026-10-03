@@ -8,11 +8,11 @@ import com.example.myapplication.data.repository.ExpensesRepository
 import com.example.myapplication.data.repository.ExpensesRepositoryImpl
 import com.example.myapplication.data.repository.ServiceRecordRepository
 import com.example.myapplication.data.repository.ServiceRecordRepositoryImpl
+import com.example.myapplication.presentation.garage.GarageCarViewModel
 import com.example.myapplication.presentation.expenses.ExpensesViewModel
 import com.example.myapplication.presentation.home.HomeViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
-import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 val appModule = module {
@@ -26,6 +26,7 @@ val appModule = module {
 
     viewModel { HomeViewModel(get()) }
     viewModel { ExpensesViewModel(get()) }
+    viewModel { GarageCarViewModel(get()) }
 
     single { get<AutoJournalDatabase>().carDao() }
     single { get<AutoJournalDatabase>().serviceRecordDao() }

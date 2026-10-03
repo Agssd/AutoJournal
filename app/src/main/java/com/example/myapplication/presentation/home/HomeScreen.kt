@@ -13,17 +13,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.myapplication.core.navigation.Screen
 import com.example.myapplication.core.theme.DarkBg
-import com.example.myapplication.presentation.components.CarCard
-import com.example.myapplication.presentation.components.HomeTopBar
+import com.example.myapplication.presentation.home.components.CarCard
+import com.example.myapplication.presentation.home.components.EmptyGarageCard
+import com.example.myapplication.presentation.home.components.HomeTopBar
 import com.example.myapplication.presentation.expenses.ExpensesCard
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HomeScreen(
     padding: PaddingValues,
-    viewModel: HomeViewModel = koinViewModel(),
     navController: NavController,
+    viewModel: HomeViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -39,11 +41,10 @@ fun HomeScreen(
             HomeTopBar()
         }
 
-        items(
-            items = state.cars,
-            key = { it.id }
-        ) { car ->
-            CarCard(car = car)
+        if (state.cars.isEmpty()) {
+            item { EmptyGarageCard(onAddClick = { navController.navigate(Screen.CarList.route) }) }
+        } else {
+            items(state.cars, key = { it.id }) { car -> CarCard(car = car) }
         }
 
         item {
