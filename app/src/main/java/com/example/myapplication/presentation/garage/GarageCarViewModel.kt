@@ -29,5 +29,6 @@ class GarageCarViewModel(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     fun delete(id: String) = viewModelScope.launch {
+        id.toLongOrNull()?.let { repo.getCarById(it)?.let { e -> repo.delete(e) } }
     }
 }

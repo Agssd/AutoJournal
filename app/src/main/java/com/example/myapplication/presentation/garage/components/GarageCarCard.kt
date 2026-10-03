@@ -4,7 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.DirectionsCar
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,11 +31,29 @@ fun CarImagePlaceholder(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun GarageCarCard(car: Car, onClick: () -> Unit = {}) {
+fun GarageCarCard(
+    car: Car,
+    onClick: () -> Unit = {},
+    onEdit: () -> Unit = {},
+    onDelete: () -> Unit = {}
+) {
     Card(onClick = onClick, shape = RoundedCornerShape(20.dp),
         colors = CardDefaults.cardColors(CardBg)) {
         Column(Modifier.padding(12.dp)) {
-            CarImagePlaceholder(Modifier.fillMaxWidth().height(140.dp))
+            Box(Modifier.fillMaxWidth()) {
+                CarImagePlaceholder(Modifier.fillMaxWidth().height(140.dp))
+                Row(
+                    modifier = Modifier.align(Alignment.TopEnd).padding(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    FilledTonalIconButton(onClick = onEdit, modifier = Modifier.size(36.dp)) {
+                        Icon(Icons.Outlined.Edit, null, modifier = Modifier.size(18.dp))
+                    }
+                    FilledTonalIconButton(onClick = onDelete, modifier = Modifier.size(36.dp)) {
+                        Icon(Icons.Outlined.Delete, null, modifier = Modifier.size(18.dp))
+                    }
+                }
+            }
             Spacer(Modifier.height(12.dp))
             Text(car.brand, color = TextWhite, fontSize = 16.sp)
             Text(car.plate, color = TextGray, fontSize = 13.sp)

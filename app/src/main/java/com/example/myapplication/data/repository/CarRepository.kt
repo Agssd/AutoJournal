@@ -15,6 +15,8 @@ interface CarRepository {
 
     suspend fun update(car: CarEntity)
 
+    suspend fun getCarById(id: Long): CarEntity?
+
     suspend fun delete(car: CarEntity)
 }
 
@@ -31,6 +33,8 @@ class CarRepositoryImpl(
     override suspend fun insert(car: CarEntity) = carDao.insert(car)
 
     override suspend fun update(car: CarEntity) = carDao.update(car)
+
+    override suspend fun getCarById(id: Long): CarEntity? = carDao.getById(id)
 
     override suspend fun delete(car: CarEntity) = carDao.delete(car)
 }

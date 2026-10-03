@@ -24,9 +24,28 @@ fun GarageCar(
     onBack: () -> Unit,
     onAddCar: () -> Unit,
     onCarClick: (String) -> Unit = {},
+    onCarEdit: (String) -> Unit = {},
     viewModel: GarageCarViewModel = koinViewModel()
 ) {
     val cars by viewModel.cars.collectAsState()
+
+    var toDelete by remember { mutableStateOf<com.example.myapplication.domain.model.Car?>(null) }
+
+    toDelete?.let { car ->
+        AlertDialog(
+            onDismissRequest = { toDelete = null },
+            title = { Text("Удалить авто?") },
+            text = { Text("«${car.brand} ${car.plate}» будет удалён без возможности восстановления.") },
+            confirmButton = {
+                TextButton(onClick = { viewModel.delete(car.id); toDelete = null }) {
+                    Text("Удалить")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { toDelete = null }) { Text("Отмена") }
+            }
+        )
+    }
 
     Scaffold(
         modifier = Modifier
@@ -50,12 +69,17 @@ fun GarageCar(
             }
         } else {
             LazyColumn(
-                modifier = Modifier.fillMaxSize().background(DarkBg),
+                modifier = Modifier.fillMaxSize().background(DarkBg).padding(inner),
                 contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 items(cars, key = { it.id }) { car ->
-                    GarageCarCard(car = car, onClick = { onCarClick(car.id) })
+                    GarageCarCard(
+                        car = car,
+                        onClick = { onCarClick(car.id) },
+                        onEdit = { onCarEdit(car.id) },
+                        onDelete = { toDelete = car }
+                    )
                 }
             }
         }

@@ -39,8 +39,9 @@ fun MainScaffold(
     }
     fun navigate(r: String) {
         navController.navigate(r) {
-            popUpTo(Screen.Home.route) { saveState = true }
-            launchSingleTop = true; restoreState = true
+            popUpTo(navController.graph.startDestinationId) { saveState = true }
+            launchSingleTop = true
+            restoreState = true
         }
     }
 
