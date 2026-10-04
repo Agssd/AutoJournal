@@ -12,6 +12,7 @@ import com.example.myapplication.presentation.cars.AddEditCarViewModel
 import com.example.myapplication.presentation.garage.GarageCarViewModel
 import com.example.myapplication.presentation.expenses.ExpensesViewModel
 import com.example.myapplication.presentation.home.HomeViewModel
+import com.example.myapplication.presentation.records.RecordScreenViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -22,13 +23,16 @@ val appModule = module {
             androidContext(),
             AutoJournalDatabase::class.java,
             "auto_journal_database"
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     viewModel { HomeViewModel(get()) }
     viewModel { ExpensesViewModel(get()) }
     viewModel { GarageCarViewModel(get()) }
     viewModel { AddEditCarViewModel(get()) }
+    viewModel { RecordScreenViewModel(get(), get()) }
 
     single { get<AutoJournalDatabase>().carDao() }
     single { get<AutoJournalDatabase>().serviceRecordDao() }

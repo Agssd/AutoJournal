@@ -8,6 +8,7 @@ import com.example.myapplication.presentation.cars.GarageCar
 import com.example.myapplication.presentation.MainScaffold
 import com.example.myapplication.presentation.car.AddEditCarScreen
 import com.example.myapplication.presentation.home.HomeScreen
+import com.example.myapplication.presentation.records.RecordScreen
 
 @Composable
 fun AppNavigation() {
@@ -32,6 +33,15 @@ fun AppNavigation() {
                 )
             }
 
+            composable(Screen.AddRecord.route) {
+                RecordScreen(
+                    padding = padding,
+                    onBack = { navController.popBackStack() },
+                    onAddCar = { navController.navigate("car_add") }
+                )
+            }
+
+
             composable("car_add") { AddEditCarScreen(padding = padding, onBack = { navController.popBackStack() }) }
             composable("car_edit/{id}") {
                 AddEditCarScreen(
@@ -42,7 +52,6 @@ fun AppNavigation() {
             }
             composable(Screen.Expenses.route) { /* ExpensesScreen\*/ }
             composable(Screen.Settings.route) { /* MoreScreen */ }
-            composable(Screen.AddRecord.route) { /* AddCarScreen */ }
         }
     }
 }

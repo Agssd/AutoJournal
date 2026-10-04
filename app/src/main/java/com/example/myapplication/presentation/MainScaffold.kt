@@ -57,7 +57,7 @@ fun MainScaffold(
 
                     Box(Modifier.weight(1f), contentAlignment = Alignment.Center) {
                         Box(Modifier.size(52.dp).clip(CircleShape).background(OrangePrimary)
-                            .clickable { }, contentAlignment = Alignment.Center) {
+                            .clickable { navigate(Screen.AddRecord.route) }, contentAlignment = Alignment.Center) {
                             Icon(Icons.Default.Add, null, tint = TextWhite, modifier = Modifier.size(28.dp))
                         }
                     }

@@ -1,6 +1,7 @@
 package com.example.myapplication.data.repository
 
 import com.example.myapplication.data.dao.ExpenseDao
+import com.example.myapplication.data.entity.ExpenseEntity
 import com.example.myapplication.domain.model.Expense
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -10,6 +11,8 @@ import java.util.Calendar
 interface ExpensesRepository {
     fun observeExpenses(year: Int): Flow<List<Expense>>
     fun observeRemindersCount(): Flow<Int>
+
+    suspend fun insert(e: ExpenseEntity)
 }
 
 class ExpensesRepositoryImpl(
@@ -27,4 +30,7 @@ class ExpensesRepositoryImpl(
         }
     }
     override fun observeRemindersCount(): Flow<Int> = flowOf(0)
+
+    override suspend fun insert(e: ExpenseEntity) = dao.insert(e)
+
 }
