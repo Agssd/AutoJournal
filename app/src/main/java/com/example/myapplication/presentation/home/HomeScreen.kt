@@ -42,7 +42,7 @@ fun HomeScreen(
         }
 
         if (state.cars.isEmpty()) {
-            item { EmptyGarageCard(onAddClick = { navController.navigate(Screen.CarList.route) }) }
+            item { EmptyGarageCard(onAddClick = { navController.navigate(Screen.Garage.route) }) }
         } else {
             items(state.cars, key = { it.id }) { car -> CarCard(car = car) }
         }

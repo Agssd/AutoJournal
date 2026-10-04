@@ -33,7 +33,7 @@ fun MainScaffold(
     val route = backStack?.destination?.route
     val selectedIndex = when (route) {
         Screen.Home.route -> 0
-        Screen.CarList.route -> 1
+        Screen.Garage.route -> 1
         Screen.Expenses.route -> 2
         else -> 3
     }
@@ -53,11 +53,11 @@ fun MainScaffold(
                     { navigate(Screen.Home.route) }
 
                     BottomItem(Modifier.weight(1f), Icons.Outlined.DirectionsCar, "Автомобили", selectedIndex == 1)
-                    { navigate(Screen.CarList.route) }
+                    { navigate(Screen.Garage.route) }
 
                     Box(Modifier.weight(1f), contentAlignment = Alignment.Center) {
                         Box(Modifier.size(52.dp).clip(CircleShape).background(OrangePrimary)
-                            .clickable { navigate("car_add") }, contentAlignment = Alignment.Center) {
+                            .clickable { }, contentAlignment = Alignment.Center) {
                             Icon(Icons.Default.Add, null, tint = TextWhite, modifier = Modifier.size(28.dp))
                         }
                     }

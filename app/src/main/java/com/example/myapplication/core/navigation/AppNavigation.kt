@@ -22,7 +22,7 @@ fun AppNavigation() {
         ) {
 
             composable(Screen.Home.route) { HomeScreen(padding, navController) }
-            composable(Screen.CarList.route) {
+            composable(Screen.Garage.route) {
                 GarageCar(
                     padding = padding,
                     onBack = { navController.popBackStack() },
