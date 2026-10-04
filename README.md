@@ -11,4 +11,4 @@ Android-приложение для гаража: автомобили, исто
 ## Стек
 - Kotlin, Jetpack Compose (Material3), Navigation Compose
 - Room (Car, Expense, ServiceRecord), Coroutines + StateFlow
-- Koin (DI), Coil (фото — позже), ML Kit OCR (план)
+- Koin (DI), ML Kit OCR (план)
