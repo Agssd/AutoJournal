@@ -1,6 +1,5 @@
-package com.example.myapplication.presentation.expenses
+package com.example.myapplication.presentation.home.expenses
 
-import android.R.attr.y
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.data.repository.ExpensesRepository
@@ -56,10 +55,9 @@ class ExpensesViewModel(
 
             val cal = Calendar.getInstance()
             fun sumFor(year: Int, month: Int): Double {
-                // curr — это год y, prev — это год y-1
                 val src = if (year == y) curr else prev
                 return src.filter {
-                    cal.apply { timeInMillis = it.timestampMillis }
+                    cal.apply { timeInMillis = it.timestamp }
                     cal.get(Calendar.YEAR) == year && cal.get(Calendar.MONTH) == month
                 }.sumOf { it.amount }
             }

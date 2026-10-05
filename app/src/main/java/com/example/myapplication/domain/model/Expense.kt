@@ -3,12 +3,10 @@ package com.example.myapplication.domain.model
 data class Expense(
     val id: String,
     val amount: Double,
-    val timestampMillis: Long,
-    val category: String
-)
-
-data class MonthlyExpense(
-    val monthIndex: Int,
-    val label: String,
-    val total: Double
+    val timestamp: Long,
+    val category: String,
+    val title: String = "",
+    val description: String = "",
+    val mileage: Int = 0,
+    val carId: Long = 0
 )

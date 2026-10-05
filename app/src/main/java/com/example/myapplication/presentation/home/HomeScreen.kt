@@ -18,7 +18,7 @@ import com.example.myapplication.core.theme.DarkBg
 import com.example.myapplication.presentation.home.components.CarCard
 import com.example.myapplication.presentation.home.components.EmptyGarageCard
 import com.example.myapplication.presentation.home.components.HomeTopBar
-import com.example.myapplication.presentation.expenses.ExpensesCard
+import com.example.myapplication.presentation.home.expenses.ExpensesCard
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

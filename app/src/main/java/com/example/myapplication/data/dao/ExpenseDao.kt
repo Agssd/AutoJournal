@@ -17,4 +17,6 @@ interface ExpenseDao {
     @Query("SELECT COUNT(*) FROM expenses")
     suspend fun count(): Int
 
+    @Query("SELECT * FROM expenses ORDER BY timestamp DESC")
+    fun observeAll(): Flow<List<ExpenseEntity>>
 }

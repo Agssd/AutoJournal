@@ -1,4 +1,4 @@
-package com.example.myapplication.presentation.expenses
+package com.example.myapplication.presentation.home.expenses
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

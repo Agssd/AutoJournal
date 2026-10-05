@@ -13,6 +13,8 @@ interface ExpensesRepository {
     fun observeRemindersCount(): Flow<Int>
 
     suspend fun insert(e: ExpenseEntity)
+
+    fun observeAll(): Flow<List<Expense>>
 }
 
 class ExpensesRepositoryImpl(
@@ -26,11 +28,36 @@ class ExpensesRepositoryImpl(
         cal.add(Calendar.YEAR, 1)
         val end = cal.timeInMillis
         return dao.observeByRange(start, end).map { list ->
-            list.map { Expense(it.id.toString(), it.amount, it.timestamp, it.category) }
+            list.map {
+                Expense(
+                    id = it.id.toString(),
+                    amount = it.amount,
+                    timestamp = it.timestamp,
+                    category = it.category,
+                    title = it.title,
+                    description = it.description,
+                    mileage = it.mileage,
+                    carId = it.carId
+                )
+            }
         }
     }
     override fun observeRemindersCount(): Flow<Int> = flowOf(0)
 
     override suspend fun insert(e: ExpenseEntity) = dao.insert(e)
 
+    override fun observeAll(): Flow<List<Expense>> = dao.observeAll().map { list ->
+        list.map {
+            Expense(
+                id = it.id.toString(),
+                amount = it.amount,
+                timestamp = it.timestamp,
+                category = it.category,
+                title = it.title,
+                description = it.description,
+                mileage = it.mileage,
+                carId = it.carId
+            )
+        }
+    }
 }

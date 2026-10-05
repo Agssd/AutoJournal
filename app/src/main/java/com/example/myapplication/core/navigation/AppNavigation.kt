@@ -7,6 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.presentation.cars.GarageCar
 import com.example.myapplication.presentation.MainScaffold
 import com.example.myapplication.presentation.car.AddEditCarScreen
+import com.example.myapplication.presentation.expenses.ExpensesScreen
 import com.example.myapplication.presentation.home.HomeScreen
 import com.example.myapplication.presentation.records.RecordScreen
 
@@ -41,6 +42,7 @@ fun AppNavigation() {
                 )
             }
 
+            composable(Screen.Expenses.route) { ExpensesScreen(padding) }
 
             composable("car_add") { AddEditCarScreen(padding = padding, onBack = { navController.popBackStack() }) }
             composable("car_edit/{id}") {
@@ -50,7 +52,6 @@ fun AppNavigation() {
                     onBack = { navController.popBackStack() }
                 )
             }
-            composable(Screen.Expenses.route) { /* ExpensesScreen\*/ }
             composable(Screen.Settings.route) { /* MoreScreen */ }
         }
     }
