@@ -132,7 +132,7 @@ fun RecordScreen(
             )
             Box(
                 Modifier.size(28.dp).clip(CircleShape).background(OrangePrimary)
-                    .clickable(enabled = cars.isNotEmpty()) { viewModel.save(onBack) },
+                    .clickable(enabled = cars.isNotEmpty()) { viewModel.save(ctx, onBack) },
                 contentAlignment = Alignment.Center
             ) {
                 Text("✓", color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold)

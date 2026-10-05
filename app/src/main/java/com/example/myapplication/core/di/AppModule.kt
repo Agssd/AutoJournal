@@ -13,6 +13,7 @@ import com.example.myapplication.presentation.expenses.ExpensesScreenViewModel
 import com.example.myapplication.presentation.garage.GarageCarViewModel
 import com.example.myapplication.presentation.home.expenses.ExpensesViewModel
 import com.example.myapplication.presentation.home.HomeViewModel
+import com.example.myapplication.presentation.records.RecordDetailViewModel
 import com.example.myapplication.presentation.records.RecordScreenViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
@@ -34,6 +35,7 @@ val appModule = module {
     viewModel { GarageCarViewModel(get()) }
     viewModel { AddEditCarViewModel(get()) }
     viewModel { RecordScreenViewModel(get(), get()) }
+    viewModel { RecordDetailViewModel(get(), get()) }
     viewModel { ExpensesScreenViewModel(get()) }
 
     single { get<AutoJournalDatabase>().carDao() }

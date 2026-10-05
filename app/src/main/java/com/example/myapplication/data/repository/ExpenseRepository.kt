@@ -56,7 +56,8 @@ class ExpensesRepositoryImpl(
                 title = it.title,
                 description = it.description,
                 mileage = it.mileage,
-                carId = it.carId
+                carId = it.carId,
+                photoUris = it.photoUris
             )
         }
     }

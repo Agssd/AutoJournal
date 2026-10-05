@@ -8,10 +8,10 @@ import kotlinx.coroutines.flow.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-data class Hist(val date: String, val title: String, val amount: Double)
+data class Hist(val id: String, val date: String, val title: String, val amount: Double)
 data class ExpScreenState(
-    val period: Int = 2, // 0 неделя 1 месяц 2 год 3 всё
-    val anchor: Long = System.currentTimeMillis(), // выбранная дата внутри периода
+    val period: Int = 2,
+    val anchor: Long = System.currentTimeMillis(),
     val title: String = "2026",
     val total: Double = 0.0, val delta: Double? = null,
     val slices: List<Slice> = emptyList(), val history: List<Hist> = emptyList()
@@ -55,7 +55,12 @@ class ExpensesScreenViewModel(private val repo: ExpensesRepository) : ViewModel(
         }.sortedByDescending { it.value }
         val df = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
         val hist = curr.sortedByDescending { it.timestamp }.take(30).map {
-            Hist(df.format(Date(it.timestamp)), it.title.ifEmpty { labels[it.category] ?: it.category }, it.amount)
+            Hist(
+                id = it.id,
+                date = df.format(Date(it.timestamp)),
+                title = it.title.ifEmpty { labels[it.category] ?: it.category },
+                amount = it.amount
+            )
         }
         ExpScreenState(p, a, title, total, if (pt > 0) (total - pt) / pt * 100 else null, slices, hist)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ExpScreenState())

@@ -8,5 +8,6 @@ data class Expense(
     val title: String = "",
     val description: String = "",
     val mileage: Int = 0,
-    val carId: Long = 0
+    val carId: Long = 0,
+    val photoUris: String = ""
 )

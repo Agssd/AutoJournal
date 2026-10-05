@@ -12,5 +12,6 @@ data class ExpenseEntity(
     val category: String,
     val title: String = "",
     val description: String = "",
+    val photoUris: String = "",
     val mileage: Int = 0
 )

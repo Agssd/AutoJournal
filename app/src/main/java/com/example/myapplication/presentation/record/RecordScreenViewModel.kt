@@ -1,5 +1,6 @@
 package com.example.myapplication.presentation.records
 
+import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,6 +10,7 @@ import com.example.myapplication.data.repository.ExpensesRepository
 import com.example.myapplication.domain.model.Car
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -55,7 +57,7 @@ class RecordScreenViewModel(
     fun setExtra1(v: String) = _state.update { it.copy(extra1 = v) }
     fun setExtra2(v: String) = _state.update { it.copy(extra2 = v) }
 
-    fun save(done: () -> Unit) = viewModelScope.launch {
+    fun save(ctx: Context, done: () -> Unit) = viewModelScope.launch {
         if (cars.value.isEmpty()) {
             _state.update { it.copy(error = "Добавьте автомобиль") }; return@launch
         }
@@ -72,6 +74,18 @@ class RecordScreenViewModel(
                 SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).parse(s.date)?.time
                     ?: System.currentTimeMillis()
             } catch (_: Exception) { System.currentTimeMillis() }
+
+            val savedUris = _photos.value.mapNotNull { uri ->
+                try {
+                    val f = java.io.File(ctx.filesDir, "cars/photo_${System.currentTimeMillis()}_${uri.lastPathSegment?.takeLast(8)}.jpg")
+                    f.parentFile?.mkdirs()
+                    ctx.contentResolver.openInputStream(uri)?.use { ins ->
+                        FileOutputStream(f).use { ins.copyTo(it) }
+                    }
+                    androidx.core.content.FileProvider.getUriForFile(ctx, "${ctx.packageName}.provider", f).toString()
+                } catch (_: Exception) { null }
+            }.joinToString(";")
+
             repo.insert(
                 ExpenseEntity(
                     amount = amount,
@@ -80,7 +94,8 @@ class RecordScreenViewModel(
                     title = s.title.trim(),
                     description = s.desc.trim(),
                     mileage = s.mileage.replace(" ", "").toIntOrNull() ?: 0,
-                    carId = carId
+                    carId = carId,
+                    photoUris = savedUris
                 )
             )
             done()

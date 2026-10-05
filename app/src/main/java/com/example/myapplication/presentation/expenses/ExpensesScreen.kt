@@ -29,6 +29,7 @@ import java.util.Locale
 @Composable
 fun ExpensesScreen(
     padding: PaddingValues,
+    onRecordClick: (String) -> Unit = {},
     viewModel: ExpensesScreenViewModel = koinViewModel()
 ) {
     val s by viewModel.state.collectAsState()
@@ -95,7 +96,11 @@ fun ExpensesScreen(
         item {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 s.history.forEach { h ->
-                    Card(colors = CardDefaults.cardColors(CardBg), shape = RoundedCornerShape(12.dp)) {
+                    Card(
+                        onClick = { onRecordClick(h.id) },
+                        colors = CardDefaults.cardColors(CardBg),
+                        shape = RoundedCornerShape(12.dp)
+                    ) {
                         Row(
                             Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 12.dp),
                             verticalAlignment = Alignment.CenterVertically

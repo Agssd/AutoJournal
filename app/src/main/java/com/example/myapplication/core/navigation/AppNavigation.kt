@@ -9,6 +9,7 @@ import com.example.myapplication.presentation.MainScaffold
 import com.example.myapplication.presentation.car.AddEditCarScreen
 import com.example.myapplication.presentation.expenses.ExpensesScreen
 import com.example.myapplication.presentation.home.HomeScreen
+import com.example.myapplication.presentation.records.RecordDetailScreen
 import com.example.myapplication.presentation.records.RecordScreen
 
 @Composable
@@ -42,9 +43,21 @@ fun AppNavigation() {
                 )
             }
 
-            composable(Screen.Expenses.route) { ExpensesScreen(padding) }
+            composable("record_detail/{id}") {
+                RecordDetailScreen(
+                    it.arguments?.getString("id")!!,
+                    padding,
+                    { navController.popBackStack() },
+                    { id -> navController.navigate("record_edit/$id") })
+            }
 
-            composable("car_add") { AddEditCarScreen(padding = padding, onBack = { navController.popBackStack() }) }
+            composable(Screen.Expenses.route) { ExpensesScreen(padding, onRecordClick = { id -> navController.navigate("record_detail/$id") }) }
+
+            composable("car_add") {
+                AddEditCarScreen(
+                    padding = padding,
+                    onBack = { navController.popBackStack() })
+            }
             composable("car_edit/{id}") {
                 AddEditCarScreen(
                     carId = it.arguments?.getString("id"),
