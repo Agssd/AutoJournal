@@ -9,6 +9,7 @@ import com.example.myapplication.data.repository.ExpensesRepositoryImpl
 import com.example.myapplication.data.repository.ServiceRecordRepository
 import com.example.myapplication.data.repository.ServiceRecordRepositoryImpl
 import com.example.myapplication.presentation.cars.AddEditCarViewModel
+import com.example.myapplication.presentation.documents.DocumentsViewModel
 import com.example.myapplication.presentation.expenses.ExpensesScreenViewModel
 import com.example.myapplication.presentation.garage.GarageCarViewModel
 import com.example.myapplication.presentation.home.expenses.ExpensesViewModel
@@ -37,10 +38,12 @@ val appModule = module {
     viewModel { RecordScreenViewModel(get(), get()) }
     viewModel { RecordDetailViewModel(get(), get()) }
     viewModel { ExpensesScreenViewModel(get()) }
+    viewModel { DocumentsViewModel(get()) }
 
     single { get<AutoJournalDatabase>().carDao() }
     single { get<AutoJournalDatabase>().serviceRecordDao() }
     single { get<AutoJournalDatabase>().expenseDao() }
+    single { get<AutoJournalDatabase>().documentDao() }
 
     single<ExpensesRepository> { ExpensesRepositoryImpl(dao = get()) }
     single<CarRepository> { CarRepositoryImpl(carDao = get()) }

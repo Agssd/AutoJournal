@@ -7,6 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.presentation.cars.GarageCar
 import com.example.myapplication.presentation.MainScaffold
 import com.example.myapplication.presentation.car.AddEditCarScreen
+import com.example.myapplication.presentation.documents.DocumentsScreen
 import com.example.myapplication.presentation.expenses.ExpensesScreen
 import com.example.myapplication.presentation.home.HomeScreen
 import com.example.myapplication.presentation.records.RecordDetailScreen
@@ -65,7 +66,13 @@ fun AppNavigation() {
                     onBack = { navController.popBackStack() }
                 )
             }
-            composable(Screen.Settings.route) { /* MoreScreen */ }
+            composable(Screen.Docs.route) {
+                DocumentsScreen(
+                    padding = padding,
+                    onBack = { navController.popBackStack() },
+                    onOpen = { id -> /* TODO: просмотр файла */ }
+                )
+            }
         }
     }
 }

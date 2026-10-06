@@ -66,7 +66,7 @@ fun MainScaffold(
                     { navigate(Screen.Expenses.route) }
 
                     BottomItem(Modifier.weight(1f), Icons.Outlined.MoreHoriz, "Ещё", selectedIndex == 3)
-                    { navigate(Screen.Settings.route) }
+                    { navigate(Screen.Docs.route) }
                 }
             }
         }
