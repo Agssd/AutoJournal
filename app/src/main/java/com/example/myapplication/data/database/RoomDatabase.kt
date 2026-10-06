@@ -18,7 +18,7 @@ import com.example.myapplication.data.entity.ServiceRecordEntity
         ExpenseEntity::class,
         DocumentEntity::class
     ],
-    version = 5
+    version = 6
 )
 abstract class AutoJournalDatabase : RoomDatabase() {
 
