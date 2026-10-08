@@ -6,11 +6,10 @@ import com.example.myapplication.domain.model.Car
 fun CarEntity.toDomain(): Car {
     return Car(
         id = id.toString(),
-        brand = "$brand $model", // объединяем бренд и модель
+        brand = "$brand $model",
         plate = plate,
         mileage = mileage,
         isFavorite = isFavorite,
-        // Задаем логику или значения по умолчанию:
         maintenanceType = Car.MaintenanceType.OIL_CHANGE,
         nextMaintenanceMileage = nextOilChangeMileage,
         monthsUntilMaintenance = null

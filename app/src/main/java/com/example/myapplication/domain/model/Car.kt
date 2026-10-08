@@ -6,6 +6,9 @@ data class Car(
     val plate: String,
     val mileage: Int,
     val isFavorite: Boolean = false,
+    val vin: String = "",
+    val year: Int = 0,
+    val color: String = "",
 
     // ТО / Замены масла
     val maintenanceType: MaintenanceType = MaintenanceType.OIL_CHANGE,

@@ -13,6 +13,7 @@ data class CarEntity(
     val vin: String,
     val plate: String,
     val mileage: Int,
+    val color: String = "",
     val isFavorite: Boolean = false,
     val nextOilChangeMileage: Int = 3500
 )

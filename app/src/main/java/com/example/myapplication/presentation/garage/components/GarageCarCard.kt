@@ -15,6 +15,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.text.font.FontWeight
 import com.example.myapplication.core.theme.*
 import com.example.myapplication.domain.model.Car
 
@@ -32,16 +33,20 @@ fun CarImagePlaceholder(modifier: Modifier = Modifier) {
 
 @Composable
 fun GarageCarCard(
-    car: Car,
+        car: Car,
     onClick: () -> Unit = {},
     onEdit: () -> Unit = {},
-    onDelete: () -> Unit = {}
+    onDelete: () -> Unit = {},
+    onMore: () -> Unit = {}
 ) {
-    Card(onClick = onClick, shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(CardBg)) {
-        Column(Modifier.padding(12.dp)) {
+    Card(
+        onClick = onClick,
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(Color(0xFF1A2027))
+    ) {
+        Column(Modifier.padding(16.dp)) {
             Box(Modifier.fillMaxWidth()) {
-                CarImagePlaceholder(Modifier.fillMaxWidth().height(140.dp))
+                CarImagePlaceholder(Modifier.fillMaxWidth().height(170.dp))
                 Row(
                     modifier = Modifier.align(Alignment.TopEnd).padding(8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -54,16 +59,34 @@ fun GarageCarCard(
                     }
                 }
             }
+            Spacer(Modifier.height(16.dp))
+            Spec("Марка автомобилей", car.brand)
+            Spec("Госномер", car.plate)
+            Spec("VIN", car.vin)
+            Spec("Год выпуска", car.year.toString())
+            Spec("Пробег", "%,d км".format(car.mileage).replace(',', ' '))
+            Spec("Цвет", car.color.ifEmpty { "—" }, last = true)
             Spacer(Modifier.height(12.dp))
-            Text(car.brand, color = TextWhite, fontSize = 16.sp)
-            Text(car.plate, color = TextGray, fontSize = 13.sp)
-            Text("${car.mileage} км", color = TextWhite, fontSize = 13.sp)
-            Spacer(Modifier.height(8.dp))
-            LinearProgressIndicator(
-                progress = { car.maintenanceProgress },
-                modifier = Modifier.fillMaxWidth(),
-                color = OrangePrimary, trackColor = ProgressTrack
-            )
+            Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                FilledTonalButton(
+                    onClick = onMore,
+                    colors = ButtonDefaults.filledTonalButtonColors(
+                        containerColor = Color(0xFF232B34), contentColor = TextGray
+                    )
+                ) { Text("Подробнее ⌄", fontSize = 13.sp) }
+            }
         }
     }
+}
+
+@Composable
+private fun Spec(l: String, v: String, last: Boolean = false) {
+    Row(
+        Modifier.fillMaxWidth().padding(vertical = 6.dp),
+        Arrangement.SpaceBetween, Alignment.CenterVertically
+    ) {
+        Text(l, color = TextGray, fontSize = 13.sp)
+        Text(v.ifEmpty { "—" }, color = TextWhite, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+    }
+    if (!last) HorizontalDivider(color = ProgressTrack.copy(alpha = 0.3f), thickness = 0.5.dp)
 }

@@ -25,7 +25,8 @@ class AddEditCarViewModel(private val repo: CarRepository) : ViewModel() {
                     it.copy(
                         brand = c.brand, plate = c.plate,
                         mileage = c.mileage.toString(),
-                        vin = c.vin, year = c.year.takeIf { y -> y > 0 }?.toString() ?: ""
+                        vin = c.vin, year = c.year.takeIf { y -> y > 0 }?.toString() ?: "",
+                        color = c.color
                     )
                 }
             }
@@ -50,7 +51,8 @@ class AddEditCarViewModel(private val repo: CarRepository) : ViewModel() {
                         year = s.year.toIntOrNull() ?: 0,
                         vin = s.vin.trim(),
                         plate = s.plate.trim().uppercase(),
-                        mileage = s.mileage.toInt()
+                        mileage = s.mileage.toInt(),
+                        color = s.color.trim()
                     )
                 )
             } else {
@@ -59,7 +61,8 @@ class AddEditCarViewModel(private val repo: CarRepository) : ViewModel() {
                     plate = s.plate.trim().uppercase(),
                     mileage = s.mileage.toInt(),
                     vin = s.vin.trim(),
-                    year = s.year.toIntOrNull() ?: 0
+                    year = s.year.toIntOrNull() ?: 0,
+                    color = s.color.trim()
                 )?.let { repo.update(it) }
             }
             done()
