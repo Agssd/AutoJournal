@@ -33,7 +33,7 @@ val appModule = module {
 
     viewModel { HomeViewModel(get()) }
     viewModel { ExpensesViewModel(get()) }
-    viewModel { GarageCarViewModel(get()) }
+    viewModel { GarageCarViewModel(get(), get()) }
     viewModel { AddEditCarViewModel(get()) }
     viewModel { RecordScreenViewModel(get(), get()) }
     viewModel { RecordDetailViewModel(get(), get()) }

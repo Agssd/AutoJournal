@@ -3,7 +3,9 @@ package com.example.myapplication.presentation.garage
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.data.repository.CarRepository
+import com.example.myapplication.data.repository.ExpensesRepository
 import com.example.myapplication.domain.model.Car
+import com.example.myapplication.domain.model.Expense
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -19,10 +21,14 @@ data class CarListState(
 )
 
 class GarageCarViewModel(
-    private val repo: CarRepository
+    private val repo: CarRepository,
+    private val expenseRepo: ExpensesRepository
 ) : ViewModel() {
     private val _state = MutableStateFlow(CarListState())
     val state: StateFlow<CarListState> = _state.asStateFlow()
+
+    val expenses: StateFlow<List<Expense>> = expenseRepo.observeAll()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     val cars: StateFlow<List<Car>> = repo.getCars()
         .onEach { _state.update { s -> s.copy(cars = it, isLoading = false) } }
